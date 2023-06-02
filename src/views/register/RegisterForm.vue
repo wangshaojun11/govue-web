@@ -92,6 +92,22 @@ export default {
       return $dirty ? !$error : null;
     },
     register() {
+      // 1.验证数据
+      // 1.1 用户与表单有交互才会有错误，将dirty制为true。没填写表单的时候也不会提交表单了。
+      this.$v.user.$touch();
+      // 1.2 判断表单是否有错误，有错误直接返回。
+      if (this.$v.user.$anyError) {
+        return;
+      }
+      // 2. 请求api
+      const api = 'http://localhost:1016/api/auth/register';
+      this.axios.post(api, { ...this.user }).then((res) => {
+        // 2.1 保存token
+        console.log(res.data);
+        // 2.2 跳转到主页
+      }).catch((err) => { // 有错误则输出到前端错误信息
+        console.log('err:', err.response.data.msg);
+      });
       console.log('register');
     },
   },
