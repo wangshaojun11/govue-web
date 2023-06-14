@@ -104,9 +104,16 @@ export default {
       this.axios.post(api, { ...this.user }).then((res) => {
         // 2.1 保存token
         console.log(res.data);
+        localStorage.setItem('token', res.data.data.token);
         // 2.2 跳转到主页
+        this.$router.replace({ name: 'home' });
       }).catch((err) => { // 有错误则输出到前端错误信息
         console.log('err:', err.response.data.msg);
+        this.$bvToast.toast(err.response.data.msg, {
+          title: '数据验证错误',
+          variant: 'danger',
+          solid: true,
+        });
       });
       console.log('register');
     },
